@@ -1,0 +1,141 @@
+:root { --pink: #ff7eb3; --ink: #ffe9f1; }
+
+* { box-sizing: border-box; margin: 0; }
+
+html, body, #root { height: 100%; }
+
+body {
+  background: #060313;
+  color: var(--ink);
+  font-family: 'Quicksand', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.stage { position: fixed; inset: 0; touch-action: none; cursor: pointer; }
+
+.script { font-family: 'Dancing Script', cursive; font-weight: 700; }
+
+.overlay {
+  position: fixed; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px; text-align: center; padding: 24px;
+  background: radial-gradient(circle at 50% 45%, rgba(60, 20, 80, 0.55), rgba(6, 3, 19, 0.92));
+  animation: fade 1s ease both;
+}
+.eyebrow { letter-spacing: 0.35em; text-transform: uppercase; font-size: 0.8rem; opacity: 0.7; }
+.start h1 {
+  font-size: clamp(2.6rem, 10vw, 5.5rem);
+  color: var(--pink);
+  text-shadow: 0 0 24px rgba(255, 126, 179, 0.7), 0 0 60px rgba(255, 126, 179, 0.35);
+}
+.tip {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 10px; padding: 9px 20px; border-radius: 999px;
+  font-size: 0.9rem; letter-spacing: 0.3px;
+  background: linear-gradient(135deg, rgba(255, 126, 179, 0.16), rgba(160, 120, 255, 0.16));
+  border: 1px solid rgba(255, 190, 220, 0.35);
+  box-shadow: 0 0 18px rgba(255, 126, 179, 0.25), inset 0 0 12px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  animation: tipfloat 3s ease-in-out infinite;
+}
+.tip-icon { display: inline-flex; color: #ffb3d4; filter: drop-shadow(0 0 6px rgba(255, 126, 179, 0.8)); }
+.tip-text { color: rgba(255, 255, 255, 0.85); }
+.tip-text b {
+  font-weight: 700;
+  background: linear-gradient(90deg, #ffd1e6, #ff7eb3, #c9a6ff, #ffd1e6);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+.tip .wave { opacity: 0; animation: wave 1.6s ease-in-out infinite; }
+.tip .w2 { animation-delay: 0.3s; }
+@keyframes wave { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
+@keyframes shimmer { to { background-position: 200% center; } }
+@keyframes tipfloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+.go {
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 126, 179, 0.18);
+  color: #fff;
+  font: inherit; font-weight: 600; font-size: 1.1rem;
+  padding: 14px 38px; border-radius: 999px; cursor: pointer;
+  backdrop-filter: blur(6px);
+  animation: glow 2s ease-in-out infinite;
+  transition: transform 0.15s;
+}
+.go:hover { transform: scale(1.06); }
+
+.controls { position: fixed; top: 14px; right: 14px; z-index: 3; display: flex; align-items: center; gap: 8px; }
+.controls button {
+  height: 40px; min-width: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255, 190, 220, 0.35);
+  background: linear-gradient(135deg, rgba(255, 126, 179, 0.16), rgba(160, 120, 255, 0.16));
+  color: #fff; font: inherit; font-size: 0.85rem; letter-spacing: 0.3px;
+  box-shadow: 0 0 14px rgba(255, 126, 179, 0.2);
+  backdrop-filter: blur(6px); transition: transform 0.15s, box-shadow 0.2s;
+}
+.controls button:hover { transform: translateY(-1px); box-shadow: 0 0 20px rgba(255, 126, 179, 0.4); }
+.controls .music { padding: 0; width: 40px; }
+.eq { display: flex; align-items: center; gap: 3px; height: 16px; }
+.eq i {
+  width: 3px; height: 100%; border-radius: 2px; background: #ffb3d4;
+  transform-origin: center; animation: eq 1s ease-in-out infinite;
+}
+.eq i:nth-child(2) { animation-delay: 0.2s; }
+.eq i:nth-child(3) { animation-delay: 0.4s; }
+.eq i:nth-child(4) { animation-delay: 0.1s; }
+.music.off .eq i { animation: none; transform: scaleY(0.2); opacity: 0.5; }
+@keyframes eq { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+
+.hint {
+  position: fixed; bottom: 22px; left: 0; right: 0; text-align: center; z-index: 1;
+  font-size: 0.85rem; opacity: 0.6; pointer-events: none; animation: fade 2s ease both;
+}
+
+.card {
+  position: fixed; z-index: 2; left: 50%; bottom: 4vh; transform: translateX(-50%);
+  width: min(92vw, 780px); max-height: 92vh; overflow: auto;
+  padding: 20px 26px 14px; text-align: center; line-height: 1.6; font-size: 0.95rem;
+  scrollbar-width: thin; scrollbar-color: rgba(255, 126, 179, 0.5) transparent;
+  background: rgba(24, 8, 44, 0.55); border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px; backdrop-filter: blur(12px);
+  box-shadow: 0 0 60px rgba(255, 126, 179, 0.25);
+  animation: rise 1.4s ease both;
+}
+.card h2 { font-size: 2rem; line-height: 1.3; color: var(--pink); margin-bottom: 4px; }
+.card::-webkit-scrollbar { width: 6px; }
+.card::-webkit-scrollbar-thumb { background: rgba(255, 126, 179, 0.5); border-radius: 3px; }
+.card::-webkit-scrollbar-track { background: transparent; margin: 14px 0; }
+.wishes {
+  list-style: none; margin: 12px 0; padding: 0; text-align: left;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+}
+@media (max-width: 600px) {
+  .card {
+    bottom: 2vh; width: 94vw; max-height: 94vh; max-height: 94dvh;
+    padding: 14px 14px 10px; font-size: 0.82rem; line-height: 1.5; border-radius: 18px;
+  }
+  .card h2 { font-size: 1.6rem; margin-bottom: 2px; }
+  .wishes { grid-template-columns: 1fr; gap: 5px; margin: 8px 0; }
+  .wishes li { padding: 6px 10px 6px 24px; font-size: 0.8rem; line-height: 1.35; border-radius: 10px; }
+  .wishes li::before { left: 9px; width: 6px; height: 6px; margin-top: -3px; }
+  .sign { font-size: 1.3rem; margin-top: 4px; }
+}
+.wishes li {
+  position: relative; padding: 8px 12px 8px 28px; border-radius: 12px; line-height: 1.45; font-size: 0.9rem;
+  background: rgba(255, 126, 179, 0.1); border: 1px solid rgba(255, 190, 220, 0.18);
+}
+.wishes li::before {
+  content: ''; position: absolute; left: 11px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px;
+  border-radius: 50%; background: var(--pink); box-shadow: 0 0 8px var(--pink);
+}
+.sign { font-size: 1.7rem; margin-top: 8px; color: var(--pink); text-align: right; }
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translate(-50%, 30px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 14px rgba(255, 126, 179, 0.4); }
+  50% { box-shadow: 0 0 34px rgba(255, 126, 179, 0.85); }
+}
